@@ -59,6 +59,9 @@ emulation:
 
 ## Device status
 
-The numbers above are from emulation. Verification on live hardware (iPhone 4S
-and iPad 2, iOS 6.1.3) is the release gate and is tracked separately; this file
-is updated with the on-device result when that run lands.
+Verified on live hardware — an iPhone 4S (armv7) and an iPad 2, both iOS 6.1.3.
+The `import Combine` probe passes all checks on each device (process exit 0),
+including the paths emulation and type-checking cannot fully exercise:
+`Timer.publish(every:on:in:).autoconnect()` delivering ticks on a real run loop,
+and `NotificationCenter.default.publisher(for:)` firing. The full upstream suite
+numbers above are from emulation.
