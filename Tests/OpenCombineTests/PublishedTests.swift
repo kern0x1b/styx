@@ -18,11 +18,11 @@ private typealias Published = Combine.Published
 @available(macOS 10.15, iOS 13.0, *)
 private typealias ObservableObject = Combine.ObservableObject
 #else
-import OpenCombine
+import Combine
 
-private typealias Published = OpenCombine.Published
+private typealias Published = Combine.Published
 
-private typealias ObservableObject = OpenCombine.ObservableObject
+private typealias ObservableObject = Combine.ObservableObject
 #endif
 
 @available(macOS 10.15, iOS 13.0, *)

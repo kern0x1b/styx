@@ -18,17 +18,19 @@ let supportedPlatforms: [Platform] = [
 ]
 
 let package = Package(
-    name: "OpenCombine",
+    name: "Combine",
     products: [
-        .library(name: "OpenCombine", targets: ["OpenCombine"]),
-        .library(name: "OpenCombineDispatch", targets: ["OpenCombineDispatch"]),
-        .library(name: "OpenCombineFoundation", targets: ["OpenCombineFoundation"]),
-        .library(name: "OpenCombineShim", targets: ["OpenCombineShim"]),
+        // A single module named `Combine`, matching Apple's own framework, so
+        // code written against system Combine builds unchanged where no system
+        // Combine exists (legacy iOS, Linux, WASI). It bundles the core, the
+        // Dispatch scheduler and the Foundation integration (Timer, RunLoop,
+        // OperationQueue, NotificationCenter) in one module.
+        .library(name: "Combine", targets: ["Combine"]),
     ],
     targets: [
         .target(name: "COpenCombineHelpers"),
         .target(
-            name: "OpenCombine",
+            name: "Combine",
             dependencies: [
                 .target(name: "COpenCombineHelpers",
                         condition: .when(platforms: supportedPlatforms.except([.wasi])))
@@ -42,34 +44,12 @@ let package = Package(
             ],
             swiftSettings: [.define("WASI", .when(platforms: [.wasi]))]
         ),
-        .target(name: "OpenCombineDispatch", dependencies: ["OpenCombine"]),
-        .target(
-            name: "OpenCombineFoundation",
-            dependencies: [
-                "OpenCombine",
-                .target(name: "COpenCombineHelpers",
-                        condition: .when(platforms: supportedPlatforms.except([.wasi])))
-            ]
-        ),
-        .target(
-            name: "OpenCombineShim",
-            dependencies: [
-                "OpenCombine",
-                .target(name: "OpenCombineDispatch",
-                        condition: .when(platforms: supportedPlatforms.except([.wasi]))),
-                .target(name: "OpenCombineFoundation",
-                        condition: .when(platforms: supportedPlatforms.except([.wasi])))
-            ]
-        ),
+        // The upstream regression suite. It runs where no system Combine
+        // shadows our module (Linux, WASI, or a legacy-iOS target); on a modern
+        // Apple host `import Combine` resolves to the system framework instead.
         .testTarget(
             name: "OpenCombineTests",
-            dependencies: [
-                "OpenCombine",
-                .target(name: "OpenCombineDispatch",
-                        condition: .when(platforms: supportedPlatforms.except([.wasi]))),
-                .target(name: "OpenCombineFoundation",
-                        condition: .when(platforms: supportedPlatforms.except([.wasi]))),
-            ],
+            dependencies: ["Combine"],
             swiftSettings: [
                 .unsafeFlags(["-enable-testing"]),
                 .define("WASI", .when(platforms: [.wasi]))

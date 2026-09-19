@@ -8,7 +8,7 @@
 #if OPENCOMBINE_COMPATIBILITY_TEST
 import Combine
 #else
-import OpenCombine
+import Combine
 #endif
 
 final class TestEncoder: TopLevelEncoder {

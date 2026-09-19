@@ -11,7 +11,7 @@ import XCTest
 #if OPENCOMBINE_COMPATIBILITY_TEST
 import Combine
 #else
-import OpenCombine
+import Combine
 #endif
 
 /// `TrackingSubscriber` records every event like "receiveSubscription",

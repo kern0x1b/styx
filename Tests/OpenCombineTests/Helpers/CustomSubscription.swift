@@ -8,7 +8,7 @@
 #if OPENCOMBINE_COMPATIBILITY_TEST
 import Combine
 #else
-import OpenCombine
+import Combine
 #endif
 
 /// `CustomSubscription` tracks all the requests and cancellations

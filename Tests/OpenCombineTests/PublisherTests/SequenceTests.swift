@@ -10,7 +10,7 @@ import XCTest
 #if OPENCOMBINE_COMPATIBILITY_TEST
 import Combine
 #else
-import OpenCombine
+import Combine
 #endif
 
 @available(macOS 10.15, iOS 13.0, *)
@@ -718,15 +718,15 @@ private final class Counter: Sequence, IteratorProtocol, CustomStringConvertible
 ///
 /// This could be fixed by explicitly specifying a type:
 ///
-///     let publisher: OpenCombine.Publishers.Sequence = [1, 2, 3, 4].publisher
+///     let publisher: Combine.Publishers.Sequence = [1, 2, 3, 4].publisher
 ///
 /// But this won't compile when testing compatibility, since compatibility tests
-/// don't import OpenCombine. This could be fixed as well like this:
+/// don't import Combine. This could be fixed as well like this:
 ///
 ///     #if OPENCOMBINE_COMPATIBILITY_TEST
 ///     let publisher: Combine.Publishers.Sequence = [1, 2, 3, 4].publisher
 ///     #else
-///     let publisher: OpenCombine.Publishers.Sequence = [1, 2, 3, 4].publisher
+///     let publisher: Combine.Publishers.Sequence = [1, 2, 3, 4].publisher
 ///     #endif
 ///
 /// But this is too verbose. This function provides a more concise way:

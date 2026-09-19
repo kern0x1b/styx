@@ -42,7 +42,7 @@ public struct AnySubscriber<Input, Failure: Error>: Subscriber,
     /// - Parameter s: The subscriber to type-erase.
     @inline(__always)
     @inlinable
-    public init<Subscriber: OpenCombine.Subscriber>(_ subscriber: Subscriber)
+    public init<Subscriber: Combine.Subscriber>(_ subscriber: Subscriber)
         where Input == Subscriber.Input, Failure == Subscriber.Failure
     {
         if let erased = subscriber as? AnySubscriber<Input, Failure> {
@@ -76,7 +76,7 @@ public struct AnySubscriber<Input, Failure: Error>: Subscriber,
         }
     }
 
-    public init<Subject: OpenCombine.Subject>(_ subject: Subject)
+    public init<Subject: Combine.Subject>(_ subject: Subject)
         where Input == Subject.Output, Failure == Subject.Failure
     {
         self.init(SubjectSubscriber(subject))

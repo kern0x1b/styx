@@ -42,7 +42,7 @@ extension Result {
         /// In contrast with `Just`, a `Once` publisher can terminate with an error
         /// instead of sending a value. In contrast with `Optional`, a `Once` publisher
         /// always sends one value (unless it terminates with an error).
-        public struct Publisher: OpenCombine.Publisher {
+        public struct Publisher: Combine.Publisher {
 
             public typealias Output = Success
 
@@ -96,7 +96,6 @@ extension Result {
         return OCombine(self)
     }
 
-#if !canImport(Combine)
     /// A publisher that publishes an output to each subscriber exactly once then
     /// finishes, or fails immediately without producing any elements.
     ///
@@ -112,7 +111,6 @@ extension Result {
     public var publisher: Publisher {
         return Publisher(self)
     }
-#endif
 }
 
 extension Result.OCombine {

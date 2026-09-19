@@ -9,8 +9,8 @@ internal protocol SubscriberTapMarker {
     var inner: Any { mutating get }
 }
 
-internal struct SubscriberTap<Subscriber: OpenCombine.Subscriber>
-: OpenCombine.Subscriber,
+internal struct SubscriberTap<Subscriber: Combine.Subscriber>
+: Combine.Subscriber,
   CustomStringConvertible,
   SubscriberTapMarker
 {

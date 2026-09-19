@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import OpenCombine
 
 extension NotificationCenter {
 
@@ -16,7 +15,7 @@ extension NotificationCenter {
     /// If you import both OpenCombine and Foundation, you will not be able
     /// to write `NotificationCenter.Publisher`,
     /// because Swift is unable to understand which `Publisher`
-    /// you're referring to — the one declared in Foundation or in OpenCombine.
+    /// you're referring to — the one declared in Foundation or in Combine.
     ///
     /// So you have to write `NotificationCenter.OCombine.Publisher`.
     ///
@@ -32,7 +31,7 @@ extension NotificationCenter {
         }
 
         /// A publisher that emits elements when broadcasting notifications.
-        public struct Publisher: OpenCombine.Publisher {
+        public struct Publisher: Combine.Publisher {
 
             public typealias Output = Notification
 
@@ -88,10 +87,8 @@ extension NotificationCenter {
         }
     }
 
-#if !canImport(Combine)
     /// A publisher that emits elements when broadcasting notifications.
     public typealias Publisher = OCombine.Publisher
-#endif
 }
 
 extension NotificationCenter {
@@ -102,7 +99,7 @@ extension NotificationCenter {
     /// If you import both OpenCombine and Foundation, you will not be able
     /// to write `NotificationCenter.default.publisher(for: name)`,
     /// because Swift is unable to understand which `publisher` method
-    /// you're referring to — the one declared in Foundation or in OpenCombine.
+    /// you're referring to — the one declared in Foundation or in Combine.
     ///
     /// So you have to write `NotificationCenter.default.ocombine.publisher(for: name)`.
     ///
@@ -111,7 +108,6 @@ extension NotificationCenter {
     /// You can omit this whenever Combine is not available (e. g. on Linux).
     public var ocombine: OCombine { return .init(self) }
 
-#if !canImport(Combine)
     /// Returns a publisher that emits events when broadcasting notifications.
     ///
     /// - Parameters:
@@ -123,7 +119,6 @@ extension NotificationCenter {
                           object: AnyObject? = nil) -> OCombine.Publisher {
         return ocombine.publisher(for: name, object: object)
     }
-#endif
 }
 
 extension NotificationCenter.OCombine.Publisher: Equatable {
@@ -137,7 +132,7 @@ extension NotificationCenter.OCombine.Publisher: Equatable {
 
 extension Notification {
     fileprivate final class Subscription<Downstream: Subscriber>
-        : OpenCombine.Subscription,
+        : Combine.Subscription,
           CustomStringConvertible,
           CustomReflectable,
           CustomPlaygroundDisplayConvertible

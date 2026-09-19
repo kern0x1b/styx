@@ -13,8 +13,8 @@ import XCTest
 #if OPENCOMBINE_COMPATIBILITY_TEST
 import Combine
 #else
-import OpenCombine
-import OpenCombineDispatch
+import Combine
+import Combine
 #endif
 
 @available(macOS 10.15, iOS 13.0, *)

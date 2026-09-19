@@ -10,7 +10,7 @@ import XCTest
 #if OPENCOMBINE_COMPATIBILITY_TEST
 import Combine
 #else
-import OpenCombine
+import Combine
 #endif
 
 let childrenIsEmpty: (Mirror) -> Bool = { $0.children.isEmpty }

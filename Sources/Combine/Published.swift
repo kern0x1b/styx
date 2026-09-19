@@ -84,7 +84,7 @@ extension Publisher where Failure == Never {
 public struct Published<Value> {
 
     /// A publisher for properties marked with the `@Published` attribute.
-    public struct Publisher: OpenCombine.Publisher {
+    public struct Publisher: Combine.Publisher {
 
         public typealias Output = Value
 

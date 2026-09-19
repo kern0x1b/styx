@@ -10,7 +10,7 @@ import XCTest
 #if OPENCOMBINE_COMPATIBILITY_TEST
 import Combine
 #else
-import OpenCombine
+import Combine
 #endif
 
 /// `OperatorTestHelper` is an abstraction that helps avoid a lot of boilerplate when

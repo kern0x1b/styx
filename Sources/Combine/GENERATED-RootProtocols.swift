@@ -67,7 +67,7 @@ public protocol Publisher<Output, Failure> {
     ///
     /// - Parameter subscriber: The subscriber to attach to this publisher. After
     ///   attaching, the subscriber can start to receive values.
-    func receive<Subscriber: OpenCombine.Subscriber>(subscriber: Subscriber)
+    func receive<Subscriber: Combine.Subscriber>(subscriber: Subscriber)
         where Failure == Subscriber.Failure, Output == Subscriber.Input
 }
 
@@ -273,7 +273,7 @@ public protocol Publisher {
     ///
     /// - Parameter subscriber: The subscriber to attach to this publisher. After
     ///   attaching, the subscriber can start to receive values.
-    func receive<Subscriber: OpenCombine.Subscriber>(subscriber: Subscriber)
+    func receive<Subscriber: Combine.Subscriber>(subscriber: Subscriber)
         where Failure == Subscriber.Failure, Output == Subscriber.Input
 }
 

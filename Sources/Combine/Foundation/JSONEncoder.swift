@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import OpenCombine
 
 extension JSONEncoder: TopLevelEncoder {
   public typealias Output = Data

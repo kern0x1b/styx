@@ -6,7 +6,6 @@
 //
 
 import Dispatch
-import OpenCombine
 
 extension DispatchQueue {
 
@@ -295,7 +294,7 @@ extension DispatchQueue {
 
         public func schedule(options: SchedulerOptions?,
                              _ action: @escaping () -> Void) {
-            let options = options ?? .init()
+            let options = options ?? SchedulerOptions()
             queue.async(group: options.group,
                         qos: options.qos,
                         flags: options.flags,
@@ -306,7 +305,7 @@ extension DispatchQueue {
                              tolerance: SchedulerTimeType.Stride,
                              options: SchedulerOptions?,
                              _ action: @escaping () -> Void) {
-            let options = options ?? .init()
+            let options = options ?? SchedulerOptions()
             queue.asyncAfter(deadline: date.dispatchTime,
                              qos: options.qos,
                              flags: options.flags,
@@ -320,7 +319,7 @@ extension DispatchQueue {
                              tolerance: SchedulerTimeType.Stride,
                              options: SchedulerOptions?,
                              _ action: @escaping () -> Void) -> Cancellable {
-            let options = options ?? .init()
+            let options = options ?? SchedulerOptions()
             let timer = DispatchSource.makeTimerSource(queue: queue)
             timer.setEventHandler(qos: options.qos,
                                   flags: options.flags,
@@ -352,8 +351,7 @@ extension DispatchQueue {
     }
 }
 
-#if !canImport(Combine)
-extension DispatchQueue: OpenCombine.Scheduler {
+extension DispatchQueue: Combine.Scheduler {
 
     /// Options that affect the operation of the dispatch queue scheduler.
     public typealias SchedulerOptions = OCombine.SchedulerOptions
@@ -393,7 +391,6 @@ extension DispatchQueue: OpenCombine.Scheduler {
                                  action)
     }
 }
-#endif
 
 // This function is taken from swift-corelibs-libdispatch:
 // https://github.com/apple/swift-corelibs-libdispatch/blob/c992dacf3ca114806e6ac9ffc9113b19255be9fe/src/swift/Time.swift#L134-L144

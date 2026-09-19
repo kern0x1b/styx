@@ -17,7 +17,7 @@ extension Publisher {
     /// - Parameters:
     ///     - subscriber: The subscriber to attach to this `Publisher`. After attaching,
     ///       the subscriber can start to receive values.
-    public func subscribe<Subscriber: OpenCombine.Subscriber>(_ subscriber: Subscriber)
+    public func subscribe<Subscriber: Combine.Subscriber>(_ subscriber: Subscriber)
         where Failure == Subscriber.Failure, Output == Subscriber.Input
     {
         if let hook = DebugHook.getGlobalHook() {
@@ -41,7 +41,7 @@ extension Publisher {
     /// Attaches the specified subject to this publisher.
     ///
     /// - Parameter subject: The subject to attach to this publisher.
-    public func subscribe<Subject: OpenCombine.Subject>(
+    public func subscribe<Subject: Combine.Subject>(
         _ subject: Subject
     ) -> AnyCancellable
         where Failure == Subject.Failure, Output == Subject.Output

@@ -8,7 +8,7 @@
 #if OPENCOMBINE_COMPATIBILITY_TEST
 import Combine
 #else
-import OpenCombine
+import Combine
 #endif
 
 @available(macOS 10.15, iOS 13.0, *)

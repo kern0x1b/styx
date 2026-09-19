@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import OpenCombine
 
 // PropertyListEncoder and PropertyListDecoder are unavailable in 
 // swift-corelibs-foundation prior to Swift 5.1.

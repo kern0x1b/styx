@@ -39,7 +39,7 @@ extension Optional {
         /// In contrast with the `Just` publisher, which always produces a single value,
         /// this publisher might not send any values and instead finish normally,
         /// if `output` is `nil`.
-        public struct Publisher: OpenCombine.Publisher {
+        public struct Publisher: Combine.Publisher {
 
             /// The kind of value published by this publisher.
             ///
@@ -85,7 +85,6 @@ extension Optional {
         return .init(self)
     }
 
-#if !canImport(Combine)
     /// The type of a Combine publisher that publishes the value of a Swift optional
     /// instance to each subscriber exactly once, if the instance has any value at
     /// all.
@@ -98,7 +97,6 @@ extension Optional {
     public var publisher: Publisher {
         return Publisher(self)
     }
-#endif
 }
 
 extension Optional.OCombine {

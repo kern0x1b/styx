@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import OpenCombine
 
 extension RunLoop {
 
@@ -215,8 +214,7 @@ extension RunLoop {
     }
 }
 
-#if !canImport(Combine)
-extension RunLoop: OpenCombine.Scheduler {
+extension RunLoop: Combine.Scheduler {
 
     /// Options that affect the operation of the run loop scheduler.
     public typealias SchedulerOptions = OCombine.SchedulerOptions
@@ -255,4 +253,3 @@ extension RunLoop: OpenCombine.Scheduler {
         return ocombine.minimumTolerance
     }
 }
-#endif

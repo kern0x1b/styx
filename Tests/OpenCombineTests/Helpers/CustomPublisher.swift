@@ -8,7 +8,7 @@
 #if OPENCOMBINE_COMPATIBILITY_TEST
 import Combine
 #else
-import OpenCombine
+import Combine
 #endif
 
 /// `CustomPublisher` sends the `subscription` object it has been initialized with

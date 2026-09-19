@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import OpenCombine
 
 extension Foundation.Timer {
 
@@ -214,10 +213,8 @@ extension Foundation.Timer {
     }
 }
 
-#if !canImport(Combine)
 extension Foundation.Timer {
 
     /// A publisher that repeatedly emits the current date on a given interval.
     public typealias TimerPublisher = OCombine.TimerPublisher
 }
-#endif

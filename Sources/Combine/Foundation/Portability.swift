@@ -74,14 +74,22 @@ internal struct Timer {
     internal var tolerance: TimeInterval {
         get {
 #if canImport(Darwin)
-            return CFRunLoopTimerGetTolerance(underlyingTimer)
+            // CFRunLoopTimer tolerance is an iOS 7.0+ API. On earlier releases a
+            // timer simply has no tolerance, so report zero rather than link a
+            // symbol the platform does not provide.
+            if #available(iOS 7.0, macOS 10.9, *) {
+                return CFRunLoopTimerGetTolerance(underlyingTimer)
+            }
+            return 0
 #else
             return underlyingTimer.tolerance
 #endif
         }
         nonmutating set {
 #if canImport(Darwin)
-            CFRunLoopTimerSetTolerance(underlyingTimer, newValue)
+            if #available(iOS 7.0, macOS 10.9, *) {
+                CFRunLoopTimerSetTolerance(underlyingTimer, newValue)
+            }
 #else
             underlyingTimer.tolerance = newValue
 #endif

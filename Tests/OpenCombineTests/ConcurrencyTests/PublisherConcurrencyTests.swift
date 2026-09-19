@@ -14,7 +14,7 @@ import _Concurrency
 #if OPENCOMBINE_COMPATIBILITY_TEST
 import Combine
 #else
-import OpenCombine
+import Combine
 #endif
 
 // swiftlint:disable:next line_length
