@@ -102,6 +102,13 @@ Timer.publish(every: 1, on: .main, in: .common)
 | `Package.swift` | the SwiftPM manifest |
 | `utils/` | source-generation helpers (`gyb`) |
 
+## Documentation
+
+| Document | About |
+| --- | --- |
+| [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md) | on-device/emulator test results and the documented limitations |
+| [`CLAUDE.md`](CLAUDE.md) | the contributor guide — design, build, gotchas |
+
 ## Trademarks
 
 Combine, Swift, iOS and iPhone are trademarks of Apple Inc. They are used here
