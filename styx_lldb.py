@@ -1,8 +1,8 @@
-# To use `opencombine_lldb.py`, figure out its full path.
-# Let's say the full path is `~/projects/OpenCombine/opencombine_lldb.py`.
+# To use `styx_lldb.py`, figure out its full path.
+# Let's say the full path is `~/projects/styx/styx_lldb.py`.
 # Then add the following statement to your `~/.lldbinit` file:
 #
-#     command script import ~/projects/OpenCombine/opencombine_lldb.py
+#     command script import ~/projects/styx/styx_lldb.py
 
 import lldb
 

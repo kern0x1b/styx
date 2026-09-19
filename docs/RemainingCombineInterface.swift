@@ -1,4 +1,4 @@
-// This file contains parts of Apple's Combine that remain unimplemented in OpenCombine
+// This file contains parts of Apple's Combine that remain unimplemented in Styx
 // Please remove the corresponding piece from this file if you implement something,
 // and complement this file as features are added in Apple's Combine
 

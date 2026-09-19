@@ -1,83 +1,122 @@
-# OpenCombine
-[![codecov](https://codecov.io/gh/OpenCombine/OpenCombine/branch/master/graph/badge.svg)](https://codecov.io/gh/OpenCombine/OpenCombine)
-![Language](https://img.shields.io/badge/Swift-5.0-orange.svg)
-[![Cocoapods](https://img.shields.io/cocoapods/v/OpenCombine?color=blue)](https://cocoapods.org/pods/OpenCombine)
+# Styx
 
-Open-source implementation of Apple's [Combine](https://developer.apple.com/documentation/combine) framework for processing values over time.
+**Combine for the platforms Apple's framework never reached — one `import Combine`, down to iOS 6, armv7.**
 
-The main goal of this project is to provide a compatible, reliable and efficient implementation which can be used on Apple's operating systems before macOS 10.15 and iOS 13, as well as Linux, Windows and WebAssembly.
+Styx is a source-level reimplementation of Apple's [Combine] reactive
+framework. It vends a single module named `Combine`, so code written against the
+system framework — `ObservableObject`, `@Published`, publishers, subjects,
+schedulers, `Timer.publish`, `NotificationCenter.publisher` — builds and runs
+unchanged on systems that have no Combine of their own: legacy iOS (tested on
+iOS 6.1.3, armv7), Linux, and WASI. It is built for the [Charon] toolchain's
+legacy-iOS work, where it is the reactive layer under [Eidolon]'s SwiftUI.
 
-| **CI Status** |
-|---|
-|[![Compatibility tests](https://github.com/OpenCombine/OpenCombine/actions/workflows/compatibility_tests.yml/badge.svg)](https://github.com/OpenCombine/OpenCombine/actions/workflows/compatibility_tests.yml)|
-|[![macOS](https://github.com/OpenCombine/OpenCombine/actions/workflows/macos.yml/badge.svg)](https://github.com/OpenCombine/OpenCombine/actions/workflows/macos.yml)|
-|[![Ubuntu](https://github.com/OpenCombine/OpenCombine/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/OpenCombine/OpenCombine/actions/workflows/ubuntu.yml)|
-|[![Windows](https://github.com/OpenCombine/OpenCombine/actions/workflows/windows.yml/badge.svg)](https://github.com/OpenCombine/OpenCombine/actions/workflows/windows.yml)|
-|[![Wasm](https://github.com/OpenCombine/OpenCombine/actions/workflows/wasm.yml/badge.svg)](https://github.com/OpenCombine/OpenCombine/actions/workflows/wasm.yml)|
+## What it does
 
+- **One module, Apple's shape.** `import Combine` alone brings the core
+  (`Publisher`, `Subscriber`, `Subject`, `AnyCancellable`, operators),
+  `ObservableObject`/`@Published`/`ObservableObjectPublisher`, the
+  `Timer.publish` / `NotificationCenter.publisher` Foundation integration, and
+  `DispatchQueue` / `RunLoop` / `OperationQueue` as `Scheduler`s — with the
+  natural spellings (`Timer.TimerPublisher`, `dispatchQueue` as a scheduler), no
+  disambiguation namespace.
+- **Runs where Combine does not exist.** No dependency on any system Combine;
+  verified on an iPhone 4S and an iPad 2 (iOS 6.1.3) and in emulation.
+- **Availability-honest on old iOS.** iOS 7-only calls (the `CFRunLoopTimer`
+  tolerance) sit behind `#available`, so the module compiles and runs correctly
+  at a 6.0 deployment target with availability checking on.
 
-### Installation
-`OpenCombine` contains three public targets: `OpenCombine`, `OpenCombineFoundation` and `OpenCombineDispatch` (the fourth one, `COpenCombineHelpers`, is considered private. Don't import it in your projects).
+### What is not included
 
-OpenCombine itself does not have any dependencies. Not even Foundation or Dispatch. If you want to use OpenCombine with Dispatch (for example for using `DispatchQueue` as `Scheduler` for operators like `debounce`, `receive(on:)` etc.), you will need to import both `OpenCombine` and `OpenCombineDispatch`. The same applies to Foundation: if you want to use, for instance, `NotificationCenter` or `URLSession` publishers, you'll need to also import `OpenCombineFoundation`.
+- **URLSession publishers** (`dataTaskPublisher`) — `URLSession` is iOS 7+, and
+  the publishers want a TLS stack this module does not carry. Omitted from the
+  legacy build.
+- A handful of operators absent from the base this fork started from
+  (`CombineLatest`, `Merge`, `collect(byTime:)`) are not yet implemented; they
+  are added as the consuming code needs them.
 
-If you develop code for multiple platforms, you may find it more convenient to import the
-`OpenCombineShim` module instead. It conditionally re-exports Combine on Apple platforms (if
-available), and all OpenCombine modules on other platforms. You can import `OpenCombineShim` only
-when using SwiftPM. It is not currently available for CocoaPods.
+## How it works
 
-##### Swift Package Manager
-###### Swift Package
-To add `OpenCombine` to your [SwiftPM](https://swift.org/package-manager/) package, add the `OpenCombine` package to the list of package and target dependencies in your `Package.swift` file. `OpenCombineDispatch` and `OpenCombineFoundation` products are currently not supported on WebAssembly. If your project targets WebAssembly exclusively, you should omit them from the list of your dependencies. If it targets multiple platforms including WebAssembly, depend on them only on non-WebAssembly platforms with [conditional target dependencies](https://github.com/apple/swift-evolution/blob/main/proposals/0273-swiftpm-conditional-target-dependencies.md).
+Apple ships Combine as a single framework. This fork's upstream split its
+sources into a core module plus separate Dispatch and Foundation modules, and
+guarded every Foundation/Dispatch extension behind a disambiguation namespace so
+it could coexist with a real Combine on newer OSes. On the platforms Styx
+targets there is no system Combine, so that split is only friction: Styx folds
+everything into one `Combine` module and exposes the plain API. The one C++
+translation unit that backs the locking primitives is compiled as a small helper
+library the module links.
+
+## Requirements
+
+- A Swift toolchain and, for the legacy-iOS build, the [Charon] toolchain with
+  its Swift runtime packages installed. Styx is consumed there as the
+  `charon@styx` package.
+- For SwiftPM use on a platform without a system Combine (Linux, WASI): a recent
+  Swift toolchain. On Apple platforms the system `Combine` shadows this module,
+  so SwiftPM builds of it are meant for the no-Combine platforms.
+
+## Build
+
+With SwiftPM, where no system Combine shadows the module:
+
+```bash
+swift build
+```
+
+For the legacy-iOS (armv7) build, take it through Charon as a package
+dependency:
+
+```lua
+add_requires("charon@styx", {alias = "combine"})
+add_packages("combine")
+```
+
+## Usage
 
 ```swift
-dependencies: [
-    .package(url: "https://github.com/OpenCombine/OpenCombine.git", from: "0.14.0")
-],
-targets: [
-    .target(
-        name: "MyAwesomePackage",
-        dependencies: [
-            "OpenCombine",
-            .product(name: "OpenCombineFoundation", package: "OpenCombine"),
-            .product(name: "OpenCombineDispatch", package: "OpenCombine")
-        ]
-    ),
-]
+import Combine
+
+final class Counter: ObservableObject {
+    @Published var value = 0
+}
+
+let counter = Counter()
+var bag = Set<AnyCancellable>()
+
+counter.objectWillChange
+    .sink { _ in print("will change") }
+    .store(in: &bag)
+
+Timer.publish(every: 1, on: .main, in: .common)
+    .autoconnect()
+    .sink { _ in counter.value += 1 }
+    .store(in: &bag)
 ```
 
-###### Xcode
-`OpenCombine` can also be added as a SwiftPM dependency directly in your Xcode project *(requires Xcode 11 upwards)*.
+## Repository layout
 
-To do so, open Xcode, use **File** → **Swift Packages** → **Add Package Dependency…**, enter the [repository URL](https://github.com/OpenCombine/OpenCombine.git), choose the latest available version, and activate the checkboxes:
+| Path | Holds |
+| --- | --- |
+| `Sources/Combine/` | the module: core, `Schedulers/`, `Foundation/` |
+| `Sources/COpenCombineHelpers/` | the C++ helper the module links (locking) |
+| `Tests/` | the regression suite (runs where no system Combine shadows it) |
+| `Package.swift` | the SwiftPM manifest |
+| `utils/` | source-generation helpers (`gyb`) |
 
-<p align="center">
-<img alt="Select the OpenCombine and OpenCombineDispatch targets" 
-	src="https://user-images.githubusercontent.com/16309982/67618468-bd379f80-f7f8-11e9-917f-e76e878a1aee.png" width="70%">
-</p>
+## Trademarks
 
-##### CocoaPods
-To add `OpenCombine` to a project using [CocoaPods](https://cocoapods.org/), add `OpenCombine` and `OpenCombineDispatch` to the list of target dependencies in your `Podfile`. 
+Combine, Swift, iOS and iPhone are trademarks of Apple Inc. They are used here
+nominatively, to say what this software is and where it runs; there is no
+affiliation with or endorsement by Apple, and none of Apple's code or assets is
+included.
 
-```ruby
-pod 'OpenCombine', '~> 0.14.0'
-pod 'OpenCombineDispatch', '~> 0.14.0'
-pod 'OpenCombineFoundation', '~> 0.14.0'
-```
+## License
 
-#### Debugger Support
+MIT, see [`LICENSE`](LICENSE). The MIT copyright notice is retained there as the
+license requires. Nothing third-party is vendored.
 
-The file `opencombine_lldb.py`  defines some `lldb` type summaries for easier debugging. These type summaries improve the way `lldb` and Xcode display some OpenCombine values.
+Built with Claude (Anthropic). This project is developed with AI assistance,
+openly — see the commit history.
 
-To use `opencombine_lldb.py`, figure out its full path. Let's say the full path is `~/projects/OpenCombine/opencombine_lldb.py`. Then the following statement to your `~/.lldbinit` file:
-
-    command script import ~/projects/OpenCombine/opencombine_lldb.py
-
-Currently, `opencombine_lldb.py` defines type summaries for these types:
-
-- `Subscribers.Demand`
-- That's all for now.
-
-### Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+[Combine]: https://developer.apple.com/documentation/combine
+[Charon]: https://github.com/kern0x1b/charon
+[Eidolon]: https://github.com/kern0x1b/eidolon

@@ -1,3 +1,17 @@
-*.swift.gyb linguist-language=Swift
+* text=auto eol=lf
 
+*.png binary
+*.jpg binary
+*.gif binary
+*.pdf binary
+*.deb binary
+*.a   binary
+*.dylib binary
+
+# Source-generation templates and their generated output
+*.swift.gyb linguist-language=Swift
 **/GENERATED-* linguist-generated=true
+
+# Keep generated/vendored bulk out of language stats and diffs
+docs/**            linguist-documentation
+*.lock             linguist-generated
