@@ -5,8 +5,8 @@
 //  Created by Sergej Jaskiewicz on 10.06.2019.
 //
 
-#if canImport(COpenCombineHelpers)
-import COpenCombineHelpers
+#if canImport(CombineHelpers)
+import CombineHelpers
 #endif
 
 #if WASI

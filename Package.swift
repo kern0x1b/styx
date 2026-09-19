@@ -28,11 +28,11 @@ let package = Package(
         .library(name: "Combine", targets: ["Combine"]),
     ],
     targets: [
-        .target(name: "COpenCombineHelpers"),
+        .target(name: "CombineHelpers"),
         .target(
             name: "Combine",
             dependencies: [
-                .target(name: "COpenCombineHelpers",
+                .target(name: "CombineHelpers",
                         condition: .when(platforms: supportedPlatforms.except([.wasi])))
             ],
             exclude: [

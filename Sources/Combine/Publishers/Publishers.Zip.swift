@@ -6,8 +6,8 @@
 
 // swiftlint:disable large_tuple
 
-#if canImport(COpenCombineHelpers)
-import COpenCombineHelpers
+#if canImport(CombineHelpers)
+import CombineHelpers
 #endif
 
 extension Publishers {

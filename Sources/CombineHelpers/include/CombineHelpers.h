@@ -1,12 +1,12 @@
 //
-//  COpenCombineHelpers.h
+//  CombineHelpers.h
 //  
 //
 //  Created by Sergej Jaskiewicz on 23/09/2019.
 //
 
-#ifndef COPENCOMBINEHELPERS_H
-#define COPENCOMBINEHELPERS_H
+#ifndef COMBINEHELPERS_H
+#define COMBINEHELPERS_H
 
 #include <stdint.h>
 
@@ -76,4 +76,4 @@ void opencombine_stop_in_debugger(void) OPENCOMBINE_SWIFT_NAME(__stopInDebugger(
 } // extern "C"
 #endif
 
-#endif /* COPENCOMBINEHELPERS_H */
+#endif /* COMBINEHELPERS_H */

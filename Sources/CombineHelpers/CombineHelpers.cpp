@@ -1,11 +1,11 @@
 //
-//  COpenCombineHelpers.cpp
+//  CombineHelpers.cpp
 //  
 //
 //  Created by Sergej Jaskiewicz on 23/09/2019.
 //
 
-#include "COpenCombineHelpers.h"
+#include "CombineHelpers.h"
 
 #include <atomic>
 #include <cstdlib>
