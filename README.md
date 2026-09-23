@@ -107,7 +107,7 @@ Timer.publish(every: 1, on: .main, in: .common)
 | Document | About |
 | --- | --- |
 | [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md) | on-device/emulator test results and the documented limitations |
-| [`CLAUDE.md`](CLAUDE.md) | the contributor guide — design, build, gotchas |
+| [`AGENTS.md`](AGENTS.md) | the contributor guide — design, build, gotchas |
 
 ## Trademarks
 
