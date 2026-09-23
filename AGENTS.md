@@ -63,7 +63,7 @@ supplement its older Dispatch overlay lacks.
   credentials, or absolute `/Users/<name>/…` paths. Use `$HOME`, placeholders,
   and a gitignored `device.env`.
 - **Commits:** plain imperative subject, no type prefixes. Keep the
-  `Co-Authored-By: Claude …` trailer — the work is openly AI-built.
+  writing agent's own `Co-Authored-By:` trailer — the work is openly AI-built.
 - **Build artifacts are never committed.**
 
 ## 5. Traps
