@@ -86,7 +86,7 @@ beyond what the MIT license requires (the copyright notice in `LICENSE`).
 This repository is part of `$HOME/Git/projects/ios/`. The workspace contract
 that applies to all projects here lives in `$HOME/Git/projects/ios/AGENTS.md`
 (§2–§6); read it for rules on the agent work area (`.agent-work/`), git
-worktrees (`.worktrees/`), delegation, safety, and shared skills.
+worktrees (`.agent-work/worktrees/`), delegation, safety, and shared skills.
 
 [Charon]: https://github.com/kern0x1b/charon
 [Eidolon]: https://github.com/kern0x1b/eidolon
