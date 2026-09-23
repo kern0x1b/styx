@@ -43,7 +43,7 @@ Consequences to respect:
 | Path | Holds |
 | --- | --- |
 | `Sources/Combine/` | the module — core at the top, `Schedulers/`, `Foundation/` |
-| `Sources/COpenCombineHelpers/` | the C++ helper the module links (locking primitives) |
+| `Sources/CombineHelpers/` | the C++ helper the module links (locking primitives) |
 | `Tests/` | the regression suite (runs where no system Combine shadows the module) |
 | `utils/` | `gyb` source-generation helpers |
 | `Package.swift` | the SwiftPM manifest |
